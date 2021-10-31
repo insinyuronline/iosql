@@ -1,10 +1,13 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::fmt;
 use std::io::{self, Write};
 
+mod table;
+use table::ColumnData;
+use table::Table;
+
 pub fn run() -> Result<(), Box<dyn Error>> {
-    let mut table = initialize_table();
+    let mut table = Table::new();
 
     loop {
         print!("db > ");
@@ -84,38 +87,6 @@ fn execute_statement(table: &mut Table, statement: Statement) -> Result<(), ()> 
                 println!("");
             }
             Ok(())
-        }
-    }
-}
-
-pub struct Table {
-    pub name: String,
-    pub headers: Vec<String>,
-    pub rows: Vec<HashMap<String, ColumnData>>,
-}
-
-fn initialize_table() -> Table {
-    Table {
-        name: "user".to_string(), 
-        headers: vec![
-            "name".to_string(), 
-            "email".to_string(), 
-            "postal_code".to_string(),
-        ], 
-        rows: Vec::new(),
-    }
-}
-
-pub enum ColumnData {
-    Int(i32),
-    Varchar(String),
-}
-
-impl fmt::Display for ColumnData {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            ColumnData::Int(v) => write!(f, "{}", v),
-            ColumnData::Varchar(v) => write!(f, "{}", v),
         }
     }
 }
