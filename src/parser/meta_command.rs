@@ -4,8 +4,8 @@ pub enum MetaCommand {
 
 impl MetaCommand {
     pub fn parse(input: &str) -> Result<MetaCommand, ()> {
-        match input {
-            ".exit" => Ok(MetaCommand::Exit),
+        match input.to_lowercase().split_whitespace().next() {
+            Some(".exit") => Ok(MetaCommand::Exit),
             _ => Err(())
         }
     }
