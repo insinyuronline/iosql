@@ -34,3 +34,13 @@ impl fmt::Display for ColumnData {
         }
     }
 }
+
+impl ColumnData {
+    pub fn parse(input: &str) -> Result<ColumnData, ()> {
+        if let Ok(parsed) =  input.parse::<i32>() {
+            Ok(ColumnData::Int(parsed))
+        } else {
+            Ok(ColumnData::Varchar(input.to_string()))
+        }
+    }
+}
