@@ -6,6 +6,9 @@ mod table;
 use table::ColumnData;
 use table::Table;
 
+mod parser;
+use parser::meta_command::MetaCommand;
+
 pub fn run() -> Result<(), Box<dyn Error>> {
     let mut table = Table::new();
 
@@ -22,7 +25,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         let input = input.trim();
 
         if input.starts_with(".") {
-            match parse_meta_command(&input) {
+            match MetaCommand::parse(&input) {
                 Ok(MetaCommand::Exit) => break,
                 Err(_) => {
                     println!("Unrecognized command: {}", input);
@@ -44,21 +47,9 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
-
-enum MetaCommand {
-    Exit
-}
-
 enum Statement {
     INSERT,
     SELECT,
-}
-
-fn parse_meta_command(input: &str) -> Result<MetaCommand, ()> {
-    match input {
-        ".exit" => Ok(MetaCommand::Exit),
-        _ => Err(())
-    }
 }
 
 fn parse_statement(input: &str) -> Result<Statement, ()> {
