@@ -1,9 +1,7 @@
-use std::collections::HashMap;
 use std::error::Error;
 use std::io::{self, Write};
 
 mod table;
-use table::ColumnData;
 use table::Table;
 
 mod parser;
@@ -43,30 +41,8 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             },
         };
 
-        let _ = execute_statement(&mut table, statement);
+        statement.execute(&mut table).unwrap();
     }
 
     Ok(())
-}
-
-fn execute_statement(table: &mut Table, statement: Statement) -> Result<(), ()> {
-    match statement {
-        Statement::INSERT => {
-            let mut row = HashMap::new();
-            row.insert("name".to_string(), ColumnData::Varchar("io".to_string()));
-            row.insert("email".to_string(), ColumnData::Varchar("io@insinyur.online".to_string()));
-            row.insert("postal_code".to_string(), ColumnData::Int(12345));
-            table.rows.push(row);
-            Ok(())
-        },
-        Statement::SELECT => {
-            for row in &table.rows {
-                print!("{} ", row.get("name").unwrap());
-                print!("{} ", row.get("email").unwrap());
-                print!("{}", row.get("postal_code").unwrap());
-                println!("");
-            }
-            Ok(())
-        }
-    }
 }
