@@ -35,7 +35,7 @@ pub fn run() -> Result<(), Box<dyn Error>> {
                 Ok(MetaCommand::Exit) => break,
                 Err(_) => {
                     println!("Unrecognized command: {}", input);
-                    continue
+                    continue;
                 }
             }
         }
@@ -44,8 +44,8 @@ pub fn run() -> Result<(), Box<dyn Error>> {
             Ok(v) => v,
             Err(_) => {
                 println!("Unrecognized command: {}", input);
-                continue
-            },
+                continue;
+            }
         };
 
         statement.execute(&mut table).unwrap();
