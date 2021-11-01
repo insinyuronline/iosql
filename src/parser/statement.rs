@@ -39,12 +39,16 @@ impl Statement {
                 table.rows.push(row);
                 Ok(())
             },
-            Statement::Select{select_columns: _} => {
+            Statement::Select{select_columns} => {
                 for row in &table.rows {
-                    print!("{} ", row.get("name").unwrap());
-                    print!("{} ", row.get("email").unwrap());
-                    print!("{}", row.get("postal_code").unwrap());
-                    println!("");
+                    let mut output = String::new();
+                    for column in select_columns {
+                        match row.get(column) {
+                            Some(v) => output.push_str(&v.to_string()),
+                            None => output.push_str("NULL"),
+                        };
+                    }
+                    println!("{}", output.trim());
                 }
                 Ok(())
             }
