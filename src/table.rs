@@ -8,14 +8,10 @@ pub struct Table {
 }
 
 impl Table {
-    pub fn new() -> Table {
+    pub fn new(name: String, headers: Vec<String>) -> Table {
         Table {
-            name: "user".to_string(), 
-            headers: vec![
-                "name".to_string(), 
-                "email".to_string(), 
-                "postal_code".to_string(),
-            ], 
+            name, 
+            headers, 
             rows: Vec::new(),
         }
     }

@@ -9,7 +9,14 @@ use parser::meta_command::MetaCommand;
 use parser::statement::Statement;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    let mut table = Table::new();
+    let mut table = Table::new(
+        "user".to_string(),
+        vec![
+            "name".to_string(),
+            "email".to_string(),
+            "postal_code".to_string(),
+        ],
+    );
 
     loop {
         print!("db > ");
