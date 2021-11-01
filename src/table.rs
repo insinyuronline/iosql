@@ -21,6 +21,7 @@ impl Table {
     }
 }
 
+#[derive(Clone)]
 pub enum ColumnData {
     Int(i32),
     Varchar(String),

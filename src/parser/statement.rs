@@ -31,24 +31,30 @@ impl Statement {
 
     pub fn execute(&self, table: &mut Table) -> Result<(), ()> {
         match self {
-            Statement::Insert{insert_data: _} => {
-                let mut row = HashMap::new();
-                row.insert("name".to_string(), ColumnData::Varchar("io".to_string()));
-                row.insert("email".to_string(), ColumnData::Varchar("io@insinyur.online".to_string()));
-                row.insert("postal_code".to_string(), ColumnData::Int(12345));
+            Statement::Insert{insert_data} => {
+                let mut row: HashMap<String, ColumnData> = HashMap::new();
+                for (i, column) in table.headers.iter().enumerate() {
+                    row.insert(
+                        column.to_string(), 
+                        match insert_data.get(i) {
+                            Some(v) => v.clone(),
+                            None => ColumnData::Varchar("NULL".to_string()),
+                        }
+                    );
+                }
                 table.rows.push(row);
                 Ok(())
             },
             Statement::Select{select_columns} => {
                 for row in &table.rows {
-                    let mut output = String::new();
+                    let mut output: Vec<String> = Vec::new();
                     for column in select_columns {
                         match row.get(column) {
-                            Some(v) => output.push_str(&v.to_string()),
-                            None => output.push_str("NULL"),
+                            Some(v) => output.push(v.to_string()),
+                            None => output.push("NULL".to_string()),
                         };
                     }
-                    println!("{}", output.trim());
+                    println!("{}", output.join(" "));
                 }
                 Ok(())
             }
