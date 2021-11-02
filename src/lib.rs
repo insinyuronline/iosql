@@ -30,7 +30,12 @@ pub fn run() -> Result<(), Box<dyn Error>> {
 
         if input.starts_with(".") {
             match MetaCommand::parse(&input) {
-                Ok(MetaCommand::Exit) => break,
+                Ok(MetaCommand::Exit) => {
+                    let mut persist = Pager::new();
+                    persist.page = table.serialize();
+                    persist.save("tempdb");
+                    break;
+                },
                 Ok(MetaCommand::Print) => {
                     println!("{}", table.serialize());
                     continue;

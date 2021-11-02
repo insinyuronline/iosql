@@ -14,4 +14,8 @@ impl Pager {
     pub fn load(&mut self, filepath: &str) {
         self.page = fs::read_to_string(filepath).unwrap();
     }
+
+    pub fn save(&self, filepath: &str) {
+        fs::write(filepath, &self.page).unwrap();
+    }
 }
