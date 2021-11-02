@@ -4,17 +4,17 @@ use std::io::{self, Write};
 mod table;
 use table::Table;
 
+mod pager;
+use pager::Pager;
+
 mod parser;
 use parser::meta_command::MetaCommand;
 use parser::statement::Statement;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    let db_input = "user
-name|email|postal_code
-gio|gio@insinyur.online|12345
-iqbal|iqbal@insinyur.online|12345
-EOF";
-    let mut table = Table::deserialize(db_input.to_string());
+    let mut pager = Pager::new();
+    pager.load("tempdb");
+    let mut table = Table::deserialize(pager.page);
 
     loop {
         print!("db > ");
