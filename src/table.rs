@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fmt;
+use std::fmt::{Write};
 
 pub struct Table {
     pub name: String,
@@ -14,6 +15,29 @@ impl Table {
             headers,
             rows: Vec::new(),
         }
+    }
+
+    pub fn serialize(&self) -> String {
+        let mut output = String::new();
+        write!(output, "{}\n", self.name).unwrap();
+        write!(output, "{}\n", self.headers.join("|")).unwrap();
+        for (i, row) in self.rows.iter().enumerate() {
+            for (j, column) in self.headers.iter().enumerate() {
+                if j > 0 {
+                    write!(output, "|{}", row.get(column).unwrap()).unwrap();
+                } else {
+                    write!(output, "{}", row.get(column).unwrap()).unwrap();
+                }
+            }
+
+            if i < (self.rows.len() - 1) {
+                write!(output, "\n").unwrap();
+            } else {
+                write!(output, "\nEOF").unwrap();
+            }
+        }
+
+        output
     }
 }
 
