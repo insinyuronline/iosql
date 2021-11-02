@@ -33,6 +33,10 @@ pub fn run() -> Result<(), Box<dyn Error>> {
         if input.starts_with(".") {
             match MetaCommand::parse(&input) {
                 Ok(MetaCommand::Exit) => break,
+                Ok(MetaCommand::Print) => {
+                    println!("{}", table.serialize());
+                    continue;
+                },
                 Err(_) => {
                     println!("Unrecognized command: {}", input);
                     continue;
