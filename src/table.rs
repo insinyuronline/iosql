@@ -9,7 +9,7 @@ pub struct Table {
 }
 
 impl Table {
-    pub fn new(name: String, headers: Vec<String>) -> Table {
+    pub fn _new(name: String, headers: Vec<String>) -> Table {
         Table {
             name,
             headers,
@@ -38,6 +38,40 @@ impl Table {
         }
 
         output
+    }
+
+    pub fn deserialize(input: String) -> Table {
+        let mut name = String::new();
+        let mut headers = Vec::new();
+        let mut rows = Vec::new();
+
+        for (i, line) in input.split("\n").enumerate() {
+            match i {
+                0 => {name = line.to_string()},
+                1 => {headers = line.split("|").map(|s| s.to_string()).collect()},
+                _ => {
+                    if line == "EOF" {
+                        break;
+                    }
+
+                    let row_input: Vec<String> = line.split("|").map(|s| s.to_string()).collect();
+                    let mut row: HashMap<String, ColumnData> = HashMap::new();
+                    for (i, column) in headers.iter().enumerate() {
+                        row.insert(
+                            column.to_string(),
+                            ColumnData::Varchar(row_input[i].clone()),
+                        );
+                    }
+                    rows.push(row);
+                }
+            }
+        }
+
+        Table {
+            name,
+            headers,
+            rows
+        }
     }
 }
 

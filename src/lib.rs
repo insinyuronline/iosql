@@ -9,14 +9,12 @@ use parser::meta_command::MetaCommand;
 use parser::statement::Statement;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    let mut table = Table::new(
-        "user".to_string(),
-        vec![
-            "name".to_string(),
-            "email".to_string(),
-            "postal_code".to_string(),
-        ],
-    );
+    let db_input = "user
+name|email|postal_code
+gio|gio@insinyur.online|12345
+iqbal|iqbal@insinyur.online|12345
+EOF";
+    let mut table = Table::deserialize(db_input.to_string());
 
     loop {
         print!("db > ");
